@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="RyanFNF.png">
+	<!-- Created with Adobe Animate version 20.5.1.31044 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="RyanBlackLines0000" x="1008" y="463" width="484" height="415" frameX="0" frameY="-16" frameWidth="484" frameHeight="447"/>
+	<SubTexture name="RyanBlackLines0001" x="1512" y="455" width="484" height="426" frameX="0" frameY="-10" frameWidth="484" frameHeight="447"/>
+	<SubTexture name="RyanBlackLines0002" x="1512" y="0" width="484" height="435" frameX="0" frameY="-6" frameWidth="484" frameHeight="447"/>
+	<SubTexture name="RyanBlackLines0003" x="1008" y="0" width="484" height="443" frameX="0" frameY="-2" frameWidth="484" frameHeight="447"/>
+	<SubTexture name="RyanBlackLines0004" x="504" y="0" width="484" height="446" frameX="0" frameY="0" frameWidth="484" frameHeight="447"/>
+	<SubTexture name="RyanBlackLines0005" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0006" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0007" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0008" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0009" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0010" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0011" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0012" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0013" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0014" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0015" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0016" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0017" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0018" x="0" y="0" width="484" height="447"/>
+	<SubTexture name="RyanBlackLines0019" x="0" y="0" width="484" height="447"/>
+</TextureAtlas>
