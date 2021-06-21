@@ -338,13 +338,13 @@ class PlayState extends MusicBeatState
 			
 			case 'bass':
 				dialogue = [
-					":dad:Hey!",
-					":bf:Bop?",
-					":dad:Oh wait, you're not him.",
-					":dad:Anyway, I see you like rappin'.",
-					":bf:Bep!",
-					":dad:Wanna rap then?",
-					":bf:Bap!",
+					":dad:Hey BF!",
+					":bf:Beep! (Hi!)",
+					":dad:Have you seen Pico by any chance?",
+					":bf:Bop. Beep boo bap bip? (No. Why you asking?)",
+					":dad:I'm waiting for him to rap.",
+					":dad:Anyway, I'm tired of waiting. Wanna rap?",
+					":bf:Boop! (Sure!)",
 					":dad:Cool!"
 				];
 		}
