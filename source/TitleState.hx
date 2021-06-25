@@ -175,6 +175,8 @@ class TitleState extends MusicBeatState
 		// logoBl.color = FlxColor.BLACK;
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
+		gfDance.x += 195;
+		gfDance.y += 75;
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByPrefix("RyanDance", "GF Dancing Beat");
 		gfDance.antialiasing = true;
