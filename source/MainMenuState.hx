@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxAxes;
 import Controls.KeyboardScheme;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -30,7 +31,7 @@ class MainMenuState extends MusicBeatState
 	#if !switch
 	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
 	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate'];
 	#end
 
 	var newGaming:FlxText;
@@ -46,6 +47,13 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	public static var finishedFunnyMove:Bool = false;
 
+	var timeEachBeat:Float = 0.600;
+	var actualTimeBeat:Float = 0;
+
+	var modLogo:FlxSprite;
+
+	private var menuOffset:Int = -275;
+
 	override function create()
 	{
 		#if windows
@@ -60,7 +68,7 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBGnoblur'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
@@ -69,35 +77,77 @@ class MainMenuState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
+		var bgOver:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBG'));
+		bgOver.scrollFactor.x = 0;
+		bgOver.scrollFactor.y = 0.10;
+		bgOver.updateHitbox();
+		bgOver.screenCenter();
+		bgOver.antialiasing = true;
+		bgOver.alpha = 0;
+		add(bgOver);
+
+		var bgCorners:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("backgroundCorners"));
+		bgCorners.scrollFactor.set();
+		bgCorners.updateHitbox();
+		bgCorners.screenCenter();
+		bgCorners.antialiasing = true;
+		add(bgCorners);
+
+		modLogo = new FlxSprite(FlxG.width- 500, FlxG.height / 2);
+		modLogo.frames = Paths.getSparrowAtlas("logoBumpin");
+		modLogo.animation.addByPrefix("logoBumpin", "logo bumpin", 24, false);
+		modLogo.scale.set(0.7, 0.7);
+		modLogo.updateHitbox();
+		modLogo.screenCenter(FlxAxes.XY);
+		modLogo.x -= menuOffset;
+		modLogo.scrollFactor.set();
+		add(modLogo);
+
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
-
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.x = 0;
-		magenta.scrollFactor.y = 0.10;
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
-		magenta.updateHitbox();
-		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.antialiasing = true;
-		magenta.color = 0xFFfd719b;
-		add(magenta);
 		// magenta.scrollFactor.set();
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
+		var tex;
+		if (!FlxG.save.data.spanishMode) tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
+		else tex = Paths.getSparrowAtlas('FNF_main_menu_assets_spanish');
+
+
+		FlxTween.tween(bgOver, {alpha: 1}, 0.6, {ease: FlxEase.linear});
 
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.6);
-			menuItem.frames = tex;
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+
+			if (!FlxG.save.data.spanishMode && optionShit[i] == "donate")
+			{
+				menuItem.frames = Paths.getSparrowAtlas('FNF_main_menu_assets_spanish');
+				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+				menuItem.scale.set(0.5, 0.5);
+				menuItem.updateHitbox();
+			}
+			else
+			{
+				menuItem.frames = tex;
+				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			}
 			menuItem.animation.play('idle');
+			if (FlxG.save.data.spanishMode)
+			{
+				menuItem.scale.set(0.6, 0.6);
+				menuItem.updateHitbox();
+			}
+			else
+			{
+				menuItem.scale.set(0.7, 0.7);
+			}
+
 			menuItem.ID = i;
-			menuItem.screenCenter(X);
+			menuItem.x += menuOffset;
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
 			menuItem.antialiasing = true;
@@ -137,6 +187,16 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		if (actualTimeBeat < timeEachBeat)
+		{
+			actualTimeBeat += FlxG.elapsed;
+		}
+		else if (actualTimeBeat >= timeEachBeat)
+		{
+			actualTimeBeat = 0;
+			beatHit();
+		}
+
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -165,15 +225,12 @@ class MainMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
-					fancyOpenURL("https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game");
+					FlxG.sound.play(Paths.sound("FART"));
 				}
 				else
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-					
-					if (FlxG.save.data.flashing)
-						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					menuItems.forEach(function(spr:FlxSprite)
 					{
@@ -214,6 +271,7 @@ class MainMenuState extends MusicBeatState
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.screenCenter(X);
+			spr.x += menuOffset;
 		});
 	}
 	
@@ -259,5 +317,10 @@ class MainMenuState extends MusicBeatState
 
 			spr.updateHitbox();
 		});
+	}
+
+	public override function beatHit()
+	{
+		modLogo.animation.play("logoBumpin");
 	}
 }

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="level_dark.png">
+	<!-- Created with Adobe Animate version 20.5.1.31044 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BuildingsBackground_dark0000" x="0" y="0" width="2006" height="682"/>
+	<SubTexture name="BuildingsLights0_dark0000" x="2026" y="0" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights1_dark0000" x="0" y="702" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights2_dark0000" x="1638" y="702" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights3_dark0000" x="0" y="1192" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights4_dark0000" x="1638" y="1192" width="1618" height="470"/>
+	<SubTexture name="Floor_dark0000" x="0" y="1682" width="2125" height="742"/>
+	<SubTexture name="ForegroundLight_dark0000" x="0" y="2444" width="2442" height="1378"/>
+	<SubTexture name="Foreground_dark0000" x="2462" y="2444" width="195" height="891"/>
+</TextureAtlas>

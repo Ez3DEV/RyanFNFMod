@@ -92,7 +92,7 @@ class ModchartState
 			FUCK++;
 		}
 
-		Lua.createtable(l, FUCK, 0); // TODONE: I did it
+		Lua.createtable(l, FUCK, 0);
 
 		for (n in Reflect.fields(res)){
 			if (!Reflect.isObject(n))

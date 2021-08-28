@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Story_Menu_Assets.png">
+	<!-- Created with Adobe Animate version 20.5.1.31044 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BackgroundOverlay0000" x="0" y="0" width="2494" height="1606"/>
+	<SubTexture name="Ryan0000" x="2514" y="0" width="1887" height="1403"/>
+	<SubTexture name="RyanBackground0000" x="4421" y="0" width="1982" height="1142"/>
+	<SubTexture name="RyanText0000" x="6423" y="0" width="633" height="127"/>
+	<SubTexture name="Tutorial0000" x="0" y="1626" width="1437" height="1357"/>
+	<SubTexture name="TutorialBackground0000" x="1457" y="1626" width="1982" height="1142"/>
+	<SubTexture name="TutorialText0000" x="3459" y="1626" width="677" height="125"/>
+	<SubTexture name="WeekOverlay0000" x="4156" y="1626" width="1041" height="458"/>
+</TextureAtlas>

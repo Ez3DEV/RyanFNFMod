@@ -1,5 +1,9 @@
 package;
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
+import flixel.effects.FlxFlicker;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -68,7 +72,10 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		bg.updateHitbox();
+		bg.screenCenter();
+		bg.antialiasing = true;
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
@@ -161,6 +168,8 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	var canMove:Bool = true;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -204,16 +213,37 @@ class FreeplayState extends MusicBeatState
 		{
 			trace(StringTools.replace(songs[curSelected].songName," ", "-").toLowerCase());
 
-			var poop:String = Highscore.formatSong(StringTools.replace(songs[curSelected].songName," ", "-").toLowerCase(), curDifficulty);
+			var poop:String;
+			if (curDifficulty == 3 && songs[curSelected].songName.toLowerCase() == "tutorial") poop = Highscore.formatSong("tutorial", curDifficulty);
+			else  poop = Highscore.formatSong(StringTools.replace(songs[curSelected].songName, " ", "-").toLowerCase(), curDifficulty);
 
 			trace(poop);
 
-			PlayState.SONG = Song.loadFromJson(poop, StringTools.replace(songs[curSelected].songName," ", "-").toLowerCase());
+			if (curDifficulty == 3 && songs[curSelected].songName.toLowerCase() == "tutorial") PlayState.SONG = Song.loadFromJson(poop, "tutorial-insane");
+			else PlayState.SONG = Song.loadFromJson(poop, StringTools.replace(songs[curSelected].songName," ", "-").toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;
 			PlayState.storyWeek = songs[curSelected].week;
 			trace('CUR WEEK' + PlayState.storyWeek);
-			LoadingState.loadAndSwitchState(new PlayState());
+			FlxG.sound.play(Paths.sound('confirmMenu'), 0.4);
+			if (FlxG.save.data.flashing)
+				{
+					FlxFlicker.flicker(iconArray[curSelected], 1, 0.06, false, false);
+					FlxFlicker.flicker(grpSongs.members[curSelected], 1, 0.06, false, false, function(flick:FlxFlicker)
+					{
+						FlxTween.tween(FlxG.camera, {zoom: 2}, 0.5, {ease: FlxEase.backIn});
+						LoadingState.loadAndSwitchState(new PlayState());
+					});
+				}
+				else
+				{
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						FlxTween.tween(FlxG.camera, {zoom: 20}, 1, {ease: FlxEase.backIn});
+						LoadingState.loadAndSwitchState(new PlayState());
+					});
+				}
+			
 		}
 	}
 
@@ -222,73 +252,95 @@ class FreeplayState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = 3;
+		if (curDifficulty > 3)
 			curDifficulty = 0;
 
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		#end
 
-		switch (curDifficulty)
+		if (!FlxG.save.data.spanishMode)
 		{
-			case 0:
-				diffText.text = "EASY";
-			case 1:
-				diffText.text = 'NORMAL';
-			case 2:
-				diffText.text = "HARD";
+			switch (curDifficulty)
+			{
+				case 0:
+					diffText.text = "EASY";
+				case 1:
+					diffText.text = 'NORMAL';
+				case 2:
+					diffText.text = "HARD";
+				case 3:
+					diffText.text = "INSANE";
+			}
+		}
+		else
+		{
+			switch (curDifficulty)
+			{
+				case 0:
+					diffText.text = "FACIL";
+				case 1:
+					diffText.text = 'NORMAL';
+				case 2:
+					diffText.text = "DIFICIL";
+				case 3:
+					diffText.text = "INSANO";
+			}
 		}
 	}
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent('Fresh');
-		#end
-
-		// NGio.logEvent('Fresh');
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-		curSelected += change;
-
-		if (curSelected < 0)
-			curSelected = songs.length - 1;
-		if (curSelected >= songs.length)
-			curSelected = 0;
-
-		// selector.y = (70 * curSelected) + 30;
-
-		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		// lerpScore = 0;
-		#end
-
-		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-		#end
-
-		var bullShit:Int = 0;
-
-		for (i in 0...iconArray.length)
+		if (canMove)
 		{
-			iconArray[i].alpha = 0.6;
-		}
+			#if !switch
+			// NGio.logEvent('Fresh');
+			#end
 
-		iconArray[curSelected].alpha = 1;
+			// NGio.logEvent('Fresh');
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		for (item in grpSongs.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
+			curSelected += change;
 
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
+			if (curSelected < 0)
+				curSelected = songs.length - 1;
+			if (curSelected >= songs.length)
+				curSelected = 0;
 
-			if (item.targetY == 0)
+			// selector.y = (70 * curSelected) + 30;
+
+			#if !switch
+			intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+			// lerpScore = 0;
+			#end
+
+			#if PRELOAD_ALL
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+			#end
+
+			var bullShit:Int = 0;
+
+			for (i in 0...iconArray.length)
 			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				iconArray[i].alpha = 0.6;
+			}
+
+			iconArray[curSelected].alpha = 1;
+
+			for (item in grpSongs.members)
+			{
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
 			}
 		}
 	}

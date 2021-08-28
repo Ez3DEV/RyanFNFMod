@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="level.png">
+	<!-- Created with Adobe Animate version 20.5.1.31044 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BuildingsBackground0000" x="0" y="0" width="2004" height="682"/>
+	<SubTexture name="BuildingsLights00000" x="2024" y="0" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights10000" x="0" y="702" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights20000" x="1638" y="702" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights30000" x="0" y="1192" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights40000" x="1638" y="1192" width="1618" height="470"/>
+	<SubTexture name="Floor0000" x="0" y="1682" width="2125" height="742"/>
+	<SubTexture name="Foreground0000" x="2145" y="1682" width="195" height="891"/>
+</TextureAtlas>

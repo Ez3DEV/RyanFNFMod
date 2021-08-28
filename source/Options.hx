@@ -92,7 +92,10 @@ class DFJKOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Key Bindings";
+		if (!FlxG.save.data.spanishMode)
+			return "Key Bindings";
+		else
+			return "Controles";
 	}
 }
 
@@ -114,7 +117,10 @@ class CpuStrums extends Option
 
 	private override function updateDisplay():String
 	{
-		return  FlxG.save.data.cpuStrums ? "Light CPU Strums" : "CPU Strums stay static";
+		if (!FlxG.save.data.spanishMode)
+			return  FlxG.save.data.cpuStrums ? "Light CPU Strums" : "CPU Strums stay static";
+		else
+			return  FlxG.save.data.cpuStrums ? "Iluminar flechas del CPU" : "Flechas del CPU estaticas";
 	}
 
 }
@@ -136,7 +142,7 @@ class DownscrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.downscroll ? "Downscroll" : "Upscroll";
+		return  FlxG.save.data.cpuStrums ? "Downscroll" : "Upscroll";
 	}
 }
 
@@ -157,7 +163,10 @@ class GhostTapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.ghost ? "Ghost Tapping" : "No Ghost Tapping";
+		if (!FlxG.save.data.spanishMode)
+			return FlxG.save.data.cpuStrums ? "Ghost Tapping" : "No Ghost Tapping";
+		else
+			return FlxG.save.data.downscroll ? "Ghost Tapping" : "Ghost Tapping Des";
 	}
 }
 
@@ -177,7 +186,10 @@ class AccuracyOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Accuracy " + (!FlxG.save.data.accuracyDisplay ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "Accuracy " + (!FlxG.save.data.accuracyDisplay ? "off" : "on");
+		else
+			return "Precision " + (!FlxG.save.data.accuracyDisplay ? "des" : "act");
 	}
 }
 
@@ -197,7 +209,10 @@ class SongPositionOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Song Position " + (!FlxG.save.data.songPosition ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "Song Position " + (!FlxG.save.data.songPosition ? "off" : "on");
+		else
+			return "Mostrar posicion " + (!FlxG.save.data.songPosition ? "des" : "act");
 	}
 }
 
@@ -217,7 +232,10 @@ class DistractionsAndEffectsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Distractions " + (!FlxG.save.data.distractions ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "Distractions " + (!FlxG.save.data.distractions ? "off" : "on");
+		else
+			return "Distracciones " + (!FlxG.save.data.distractions ? "des" : "act");
 	}
 }
 
@@ -237,7 +255,10 @@ class ResetButtonOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Reset Button " + (!FlxG.save.data.resetButton ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "Reset Button " + (!FlxG.save.data.resetButton ? "off" : "on");
+		else
+			return "Boton de reinicio " + (!FlxG.save.data.resetButton ? "des" : "act");
 	}
 }
 
@@ -257,7 +278,10 @@ class FlashingLightsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Flashing Lights " + (!FlxG.save.data.flashing ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "Flashing Lights " + (!FlxG.save.data.flashing ? "off" : "on");
+		else
+			return "Luces parpadeantes " + (!FlxG.save.data.flashing ? "des" : "act");
 	}
 }
 
@@ -295,7 +319,7 @@ class Judgement extends Option
 	}
 
 	override function getValue():String {
-		return "Safe Frames: " + Conductor.safeFrames +
+		return "Frames seguros: " + Conductor.safeFrames +
 		" - SIK: " + HelperFunctions.truncateFloat(45 * Conductor.timeScale, 0) +
 		"ms GD: " + HelperFunctions.truncateFloat(90 * Conductor.timeScale, 0) +
 		"ms BD: " + HelperFunctions.truncateFloat(135 * Conductor.timeScale, 0) + 
@@ -334,7 +358,10 @@ class FPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "FPS Counter " + (!FlxG.save.data.fps ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "FPS Counter " + (!FlxG.save.data.fps ? "off" : "on");
+		else
+			return "Contador de FPS " + (!FlxG.save.data.fps ? "des" : "act");
 	}
 }
 
@@ -356,7 +383,10 @@ class FPSCapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "FPS Cap";
+		if (!FlxG.save.data.spanishMode)
+			return "FPS Cap";
+		else
+			return "Bloqueo de FPS";
 	}
 	
 	override function right():Bool {
@@ -385,8 +415,16 @@ class FPSCapOption extends Option
 
 	override function getValue():String
 	{
-		return "Current FPS Cap: " + FlxG.save.data.fpsCap + 
-		(FlxG.save.data.fpsCap == Application.current.window.displayMode.refreshRate ? "Hz (Refresh Rate)" : "");
+		if (!FlxG.save.data.spanishMode)
+		{
+			return "Current FPS Cap: " + FlxG.save.data.fpsCap + 
+			(FlxG.save.data.fpsCap == Application.current.window.displayMode.refreshRate ? "Hz (Refresh Rate)" : "");
+		}
+		else
+		{
+			return "Bloqueo de FPS actual: " + FlxG.save.data.fpsCap + 
+			(FlxG.save.data.fpsCap == Application.current.window.displayMode.refreshRate ? "Hz (Refresh Rate)" : "");
+		}
 	}
 }
 
@@ -407,7 +445,10 @@ class ScrollSpeedOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Scroll Speed";
+		if (!FlxG.save.data.spanishMode)
+			return "Scroll Speed";
+		else
+			return "Velocidad de scroll";
 	}
 
 	override function right():Bool {
@@ -422,7 +463,11 @@ class ScrollSpeedOption extends Option
 	}
 
 	override function getValue():String {
-		return "Current Scroll Speed: " + HelperFunctions.truncateFloat(FlxG.save.data.scrollSpeed,1);
+		if (!FlxG.save.data.spanishMode)
+			return "Current Scroll Speed: " + HelperFunctions.truncateFloat(FlxG.save.data.scrollSpeed,1);
+		else
+			return "Velocidad de scroll actual: " + HelperFunctions.truncateFloat(FlxG.save.data.scrollSpeed,1);
+		
 	}
 
 	override function left():Bool {
@@ -457,7 +502,10 @@ class RainbowFPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "FPS Rainbow " + (!FlxG.save.data.fpsRain ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "FPS Rainbow" + (!FlxG.save.data.fpsRain ? "off" : "on");
+		else
+			return "FPS Arcoiris" + (!FlxG.save.data.fpsRain ? "des" : "act");
 	}
 }
 
@@ -478,7 +526,10 @@ class NPSDisplayOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "NPS Display " + (!FlxG.save.data.npsDisplay ? "off" : "on");
+		if (!FlxG.save.data.spanishMode)
+			return "NPS Display " + (!FlxG.save.data.npsDisplay ? "off" : "on");
+		else
+			return "Mostrar NPS " + (!FlxG.save.data.fpsRain ? "des" : "act");
 	}
 }
 
@@ -499,7 +550,10 @@ class ReplayOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Load replays";
+		if (!FlxG.save.data.spanishMode)
+			return "Load replays";
+		else
+			return "Cargar replays";
 	}
 }
 
@@ -520,7 +574,10 @@ class AccuracyDOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Accuracy Mode: " + (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex");
+		if (!FlxG.save.data.spanishMode)
+			return "Accuracy Mode: "+ (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex");
+		else
+			return "Modo de precision: " + (FlxG.save.data.accuracyMod == 0 ? "Preciso" : "Complejo");
 	}
 }
 
@@ -541,7 +598,10 @@ class CustomizeGameplay extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Customize Gameplay";
+		if (!FlxG.save.data.spanishMode)
+			return "Customize Gameplay";
+		else
+			return "Personalizar gameplay";
 	}
 }
 
@@ -563,7 +623,10 @@ class WatermarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Watermarks " + (Main.watermarks ? "on" : "off");
+		if (!FlxG.save.data.spanishMode)
+			return "Watermarks " + (!Main.watermarks ? "off" : "on");
+		else
+			return "Marcas de agua " + (!Main.watermarks ? "des" : "act");
 	}
 }
 
@@ -592,7 +655,10 @@ class OffsetMenu extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Time your offset";
+		if (!FlxG.save.data.spanishMode)
+			return "Time your offset";
+		else
+			return "Ajusta el desfase";
 	}
 }
 class BotPlay extends Option
@@ -612,5 +678,57 @@ class BotPlay extends Option
 	}
 	
 	private override function updateDisplay():String
-		return "BotPlay " + (FlxG.save.data.botplay ? "on" : "off");
+	{
+		if (!FlxG.save.data.spanishMode)
+			return "BotPlay " + (FlxG.save.data.botplay ? "on" : "off");
+		else
+			return "BotPlay " + (FlxG.save.data.botplay ? "act" : "des");
+	}
+}
+
+class HideScore extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.hideScore = !FlxG.save.data.hideScore;
+		trace('HideScore: ' + FlxG.save.data.hideScore);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.spanishMode)
+			return "Hide Score Popup " + (FlxG.save.data.botplay ? "on" : "off");
+		else
+			return "Ocultar Popup de Score " + (FlxG.save.data.botplay ? "act" : "des");
+	}
+}
+
+class SpanishMode extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.spanishMode = !FlxG.save.data.spanishMode;
+		trace("SpanishMode: " + FlxG.save.data.spanishMode);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return (FlxG.save.data.spanishMode ? "Espanol" : "English");
+	}
 }

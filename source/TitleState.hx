@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.addons.display.FlxTiledSprite;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.display.FlxGridOverlay;
@@ -45,6 +46,12 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var titleDotsBottom:FlxTiledSprite;
+	var titleDotsTop:FlxTiledSprite;
+
+	var floatShit:Float = 0;
+	var logoCreated:Bool = false;
+	var dotsCreated:Bool = false;
 
 	var curWacky:Array<String> = [];
 
@@ -123,7 +130,7 @@ class TitleState extends MusicBeatState
 	}
 
 	var logoBl:FlxSprite;
-	var gfDance:FlxSprite;
+	var logoBlEffect:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 
@@ -159,29 +166,58 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(102);
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = true;
-		// bg.setGraphicSize(Std.int(bg.width * 0.6));
-		// bg.updateHitbox();
-		add(bg);
+		var background:FlxSprite = new FlxSprite().loadGraphic(Paths.image("storymenu/ryanBackground"));
+		background.scale.set(0.7, 0.7);
+		background.updateHitbox();
+		background.screenCenter();
+		add(background);
 
-		logoBl = new FlxSprite(-150, -100);
+		titleDotsBottom = new FlxTiledSprite(1278, 286, true, false);
+		titleDotsBottom.loadGraphic(Paths.image('titleDots'));
+		titleDotsBottom.screenCenter();
+		titleDotsBottom.scale.set(1.2, 1.2);
+		titleDotsBottom.updateHitbox();
+		titleDotsBottom.x -= 639;
+		titleDotsBottom.y += 140;
+		add(titleDotsBottom);
+
+		titleDotsTop = new FlxTiledSprite(1278, 276, true, false);
+		titleDotsTop.loadGraphic(Paths.image('titleDots'));
+		titleDotsTop.screenCenter();
+		titleDotsTop.scale.set(1.2, 1.2);
+		titleDotsTop.updateHitbox();
+		titleDotsTop.x -= 639;
+		titleDotsTop.y -= 400;
+		add(titleDotsTop);
+		dotsCreated = true;
+
+		var backgroundCorners = new FlxSprite().loadGraphic(Paths.image("backgroundCorners"));
+		backgroundCorners.updateHitbox();
+		backgroundCorners.screenCenter();
+		add(backgroundCorners);
+
+		logoBl = new FlxSprite(-120, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+		logoBl.screenCenter();
+		logoBl.y -= 30;
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
-		gfDance.x += 195;
-		gfDance.y += 75;
-		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-		gfDance.animation.addByPrefix("RyanDance", "GF Dancing Beat");
-		gfDance.antialiasing = true;
-		add(gfDance);
+		logoBlEffect = new FlxSprite(-120, -100);
+		logoBlEffect.frames = Paths.getSparrowAtlas('logoBumpin');
+		logoBlEffect.antialiasing = true;
+		logoBlEffect.animation.addByPrefix('bump', 'logo bumpin', 24);
+		logoBlEffect.animation.play('bump');
+		logoBlEffect.updateHitbox();
+		logoBlEffect.screenCenter();
+		logoBlEffect.y -= 30;
+
+		add(logoBlEffect);
 		add(logoBl);
+		// logoBl.color = FlxColor.BLACK;
+		logoCreated = true;
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -196,6 +232,7 @@ class TitleState extends MusicBeatState
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.screenCenter();
 		logo.antialiasing = true;
+
 		// add(logo);
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
@@ -237,23 +274,51 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var fullText:String = Assets.getText(Paths.txt('introText'));
-
-		var firstArray:Array<String> = fullText.split('\n');
-		var swagGoodArray:Array<Array<String>> = [];
-
-		for (i in firstArray)
+		if (!FlxG.save.data.spanishMode)
 		{
-			swagGoodArray.push(i.split('--'));
+			var fullText:String = Assets.getText(Paths.txt('introText'));
+	
+			var firstArray:Array<String> = fullText.split('\n');
+			var swagGoodArray:Array<Array<String>> = [];
+	
+			for (i in firstArray)
+			{
+				swagGoodArray.push(i.split('--'));
+			}
+	
+			return swagGoodArray;
 		}
-
-		return swagGoodArray;
+		else
+		{
+			var fullText:String = Assets.getText(Paths.txt('introTextSpanish'));
+	
+			var firstArray:Array<String> = fullText.split('\n');
+			var swagGoodArray:Array<Array<String>> = [];
+	
+			for (i in firstArray)
+			{
+				swagGoodArray.push(i.split('--'));
+			}
+	
+			return swagGoodArray;
+		}
 	}
 
 	var transitioning:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		floatShit += 0.03;
+		if (logoCreated)
+		{
+			logoBl.y += Math.sin(floatShit);
+			logoBlEffect.y += Math.sin(floatShit);
+		}
+		if (dotsCreated)
+		{
+			titleDotsBottom.scrollX += 0.1;
+			titleDotsTop.scrollX -= 0.1;
+		}
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
@@ -297,6 +362,8 @@ class TitleState extends MusicBeatState
 			if (Date.now().getDay() == 5)
 				NGio.unlockMedal(61034);
 			#end
+
+			FlxTween.tween(logoBlEffect, { "scale.x": 2, "scale.y": 2, alpha: 0 }, 0.5, {ease: FlxEase.linear});
 
 			if (FlxG.save.data.flashing)
 				titleText.animation.play('press');
@@ -360,8 +427,6 @@ class TitleState extends MusicBeatState
 
 		logoBl.animation.play('bump');
 
-		gfDance.animation.play('RyanDance');
-
 		FlxG.log.add(curBeat);
 
 		switch (curBeat)
@@ -370,7 +435,8 @@ class TitleState extends MusicBeatState
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 			// credTextShit.visible = true;
 			case 3:
-				addMoreText('present');
+				if (!FlxG.save.data.spanishMode) addMoreText('present');
+				else addMoreText('presentan');
 			// credTextShit.text += '\npresent...';
 			// credTextShit.addText();
 			case 4:
@@ -380,9 +446,11 @@ class TitleState extends MusicBeatState
 			// credTextShit.screenCenter();
 			case 5:
 				if (Main.watermarks)
-					createCoolText(['Kade Engine', 'by']);
+					if (!FlxG.save.data.spanishMode) createCoolText(['Kade Engine', 'by']);
+					else createCoolText(['Kade Engine', 'por']);
 				else
-					createCoolText(['Big love', 'to']);
+					if (!FlxG.save.data.spanishMode) createCoolText(['Big love', 'to']);
+					else createCoolText(['Gran carino', 'a']);
 			case 7:
 				if (Main.watermarks)
 					addMoreText('KadeDeveloper');
@@ -411,13 +479,13 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = "Friday";
 			// credTextShit.screenCenter();
 			case 13:
-				addMoreText('Friday');
+				addMoreText('FNF');
 			// credTextShit.visible = true;
 			case 14:
-				addMoreText('Night');
+				addMoreText('VS');
 			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+				addMoreText('RYAN'); // credTextShit.text += '\nFunkin';
 
 			case 16:
 				skipIntro();

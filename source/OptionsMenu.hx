@@ -23,45 +23,7 @@ class OptionsMenu extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var options:Array<OptionCategory> = [
-		new OptionCategory("Gameplay", [
-			new DFJKOption(controls),
-			new DownscrollOption("Change the layout of the strumline."),
-			new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
-			new Judgement("Customize your Hit Timings (LEFT or RIGHT)"),
-			#if desktop
-			new FPSCapOption("Cap your FPS"),
-			#end
-			new ScrollSpeedOption("Change your scroll speed (1 = Chart dependent)"),
-			new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
-			new ResetButtonOption("Toggle pressing R to gameover."),
-			// new OffsetMenu("Get a note offset based off of your inputs!"),
-			new CustomizeGameplay("Drag'n'Drop Gameplay Modules around to your preference")
-		]),
-		new OptionCategory("Appearance", [
-			#if desktop
-			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
-			new RainbowFPSOption("Make the FPS Counter Rainbow"),
-			new AccuracyOption("Display accuracy information."),
-			new NPSDisplayOption("Shows your current Notes Per Second."),
-			new SongPositionOption("Show the songs current position (as a bar)"),
-			new CpuStrums("CPU's strumline lights up when a note hits it."),
-			#else
-			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.")
-			#end
-		]),
-		
-		new OptionCategory("Misc", [
-			#if desktop
-			new FPSOption("Toggle the FPS Counter"),
-			new ReplayOption("View replays"),
-			#end
-			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
-			new WatermarkOption("Enable and disable all watermarks from the engine."),
-			new BotPlay("Showcase your charts and mods with autoplay.")
-		])
-		
-	];
+	var options:Array<OptionCategory>;
 
 	public var acceptInput:Bool = true;
 
@@ -74,10 +36,98 @@ class OptionsMenu extends MusicBeatState
 	override function create()
 	{
 		instance = this;
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
 
-		menuBG.color = 0xFFea71fd;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
+		if (!FlxG.save.data.spanishMode)
+			{
+				options = [
+					new OptionCategory("Gameplay", [
+						new DFJKOption(controls),
+						new DownscrollOption("Change the layout of the strumline."),
+						new GhostTapOption("Ghost Tapping is when you tap a direction and it doesn't give you a miss."),
+						new Judgement("Customize your Hit Timings (LEFT or RIGHT)"),
+						#if desktop
+						new FPSCapOption("Cap your FPS"),
+						#end
+						new ScrollSpeedOption("Change your scroll speed (1 = Chart dependent)"),
+						new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
+						new ResetButtonOption("Toggle pressing R to gameover."),
+						// new OffsetMenu("Get a note offset based off of your inputs!"),
+						new HideScore("Hide score popup on note hit."),
+						new CustomizeGameplay("Drag'n'Drop Gameplay Modules around to your preference")
+					]),
+					new OptionCategory("Appearance", [
+						new SpanishMode("Change the language of the game."),
+						#if desktop
+						new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
+						new RainbowFPSOption("Make the FPS Counter Rainbow"),
+						new AccuracyOption("Display accuracy information."),
+						new NPSDisplayOption("Shows your current Notes Per Second."),
+						new SongPositionOption("Show the songs current position (as a bar)"),
+						new CpuStrums("CPU's strumline lights up when a note hits it."),
+						#else
+						new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.")
+						#end
+					]),
+					
+					new OptionCategory("Misc", [
+						#if desktop
+						new FPSOption("Toggle the FPS Counter"),
+						new ReplayOption("View replays"),
+						#end
+						new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
+						new WatermarkOption("Enable and disable all watermarks from the engine."),
+						new BotPlay("Showcase your charts and mods with autoplay.")
+					])
+					
+				];
+			}
+			else
+			{
+				options = [
+					new OptionCategory("Gameplay", [
+						new DFJKOption(controls),
+						new DownscrollOption("Cambiar como se ven las flechas."),
+						new GhostTapOption("Ghost tapping es cuando tocas una flecha cuando no hay y no te da un miss."),
+						new Judgement("Personaliza los timings al presionar (IZQUIERDA o DERECHA)"),
+						#if desktop
+						new FPSCapOption("Bloquea tus FPS"),
+						#end
+						new ScrollSpeedOption("Cambia la velocidad de las flechas (1 = Depende del mapa)"),
+						new AccuracyDOption("Cambia como se calcula la precision. (Accurate = Simple, Complex = Basado en milisegundos)"),
+						new ResetButtonOption("Activa o desactiva la R para reiniciar rapido."),
+						// new OffsetMenu("Get a note offset based off of your inputs!"),
+						new HideScore("Oculta el score cuando se toca una nota."),
+						new CustomizeGameplay("Arrastra y suelta los elementos del gameplay a tu gusto!")
+					]),
+					new OptionCategory("Apariencia", [
+						new SpanishMode("Cambia el idioma del juego."),
+						#if desktop
+						new DistractionsAndEffectsOption("Activa o desactiva las distracciones de los niveles."),
+						new RainbowFPSOption("Haz que el contador de FPS sea de color arcoiris"),
+						new AccuracyOption("Muestra la informacion de precision."),
+						new NPSDisplayOption("Muestra tus notas por segundo actuales."),
+						new SongPositionOption("Muestra la posicion actual de la cancion (en una barra)."),
+						new CpuStrums("Las notas del enemigo brillan cuando las presiona."),
+						#else
+						new DistractionsAndEffectsOption("Activa o desactiva las distracciones de los niveles.")
+						#end
+					]),
+					
+					new OptionCategory("Misc", [
+						#if desktop
+						new FPSOption("Activa o desactiva el contador de FPS"),
+						new ReplayOption("Ve los replays"),
+						#end
+						new FlashingLightsOption("Activa o desactiva luces que pueden causar epilepsia."),
+						new WatermarkOption("Activa o desactiva todas las marcas de agua del Kade Engine."),
+						new BotPlay("Muestra tus charts y mod con AutoPlay.")
+					])
+					
+				];
+			}
+
+		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuBG"));
+
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
 		menuBG.antialiasing = true;
@@ -97,7 +147,8 @@ class OptionsMenu extends MusicBeatState
 
 		currentDescription = "none";
 
-		versionShit = new FlxText(5, FlxG.height + 40, 0, "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription, 12);
+		if (!FlxG.save.data.spanishMode) versionShit = new FlxText(5, FlxG.height + 40, 0, "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription, 12);
+		else versionShit = new FlxText(5, FlxG.height + 40, 0, "Offset (Izquierda, Derecha, Shift para mas lento): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Descripcion - " + currentDescription, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		
@@ -184,7 +235,8 @@ class OptionsMenu extends MusicBeatState
 				if (currentSelectedCat.getOptions()[curSelected].getAccept())
 					versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
 				else
-					versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+					if (!FlxG.save.data.spanishMode) versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+					else versionShit.text = "Offset (Izquierda, Derecha, Shift para mas lento): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Descripcion - " + currentDescription;
 			}
 			else
 			{
@@ -262,10 +314,12 @@ class OptionsMenu extends MusicBeatState
 			if (currentSelectedCat.getOptions()[curSelected].getAccept())
 				versionShit.text =  currentSelectedCat.getOptions()[curSelected].getValue() + " - Description - " + currentDescription;
 			else
-				versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+				if (!FlxG.save.data.spanishMode) versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+				else versionShit.text = "Offset (Izquierda, Derecha, Shift para mas lento): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Descripcion - " + currentDescription;
 		}
 		else
-			versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+			if (!FlxG.save.data.spanishMode) versionShit.text = "Offset (Left, Right, Shift for slow): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Description - " + currentDescription;
+			else versionShit.text = "Offset (Izquierda, Derecha, Shift para mas lento): " + HelperFunctions.truncateFloat(FlxG.save.data.offset,2) + " - Descripcion - " + currentDescription;
 		// selector.y = (70 * curSelected) + 30;
 
 		var bullShit:Int = 0;

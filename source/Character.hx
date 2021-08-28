@@ -288,6 +288,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
 
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
+				animation.addByPrefix('hit', 'BF hit', 24);
 
 				addOffset('idle', -5);
 				addOffset("singUP", -29, 27);
@@ -303,6 +304,7 @@ class Character extends FlxSprite
 				addOffset('deathLoop', 37, 5);
 				addOffset('deathConfirm', 37, 69);
 				addOffset('scared', -4);
+				addOffset('hit');
 
 				playAnim('idle');
 
@@ -499,8 +501,44 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 				
-			case 'ryan':
-				tex = Paths.getSparrowAtlas('characters/Ryan_FNF_assetss');
+				case 'ryan':
+					tex = Paths.getSparrowAtlas('characters/Ryan_FNF_assetss');
+					frames = tex;
+					animation.addByPrefix('idle', "RyanIdle", 24);
+	
+					animation.addByPrefix('singUP', 'RyanUp', 24, false);
+					animation.addByPrefix('singDOWN', 'RyanDown', 24, false);
+					animation.addByPrefix('singLEFT', 'RyanLeft', 24, false);
+					animation.addByPrefix('singRIGHT', 'RyanRight', 24, false);
+	
+					addOffset('idle');
+					addOffset("singUP", -2, 85);
+					addOffset("singRIGHT", -17, -9);
+					addOffset("singLEFT", 21, -5);
+					addOffset("singDOWN", -7, -116);
+	
+					playAnim('idle');
+	
+				case 'ryan-nogun':
+					tex = Paths.getSparrowAtlas('characters/Ryan_FNF_assetss_nogun');
+					frames = tex;
+					animation.addByPrefix('idle', "RyanIdleNoGun", 24);
+	
+					animation.addByPrefix('singUP', 'RyanUpNoGun', 24, false);
+					animation.addByPrefix('singDOWN', 'RyanDownNoGun', 24, false);
+					animation.addByPrefix('singLEFT', 'RyanLeftNoGun', 24, false);
+					animation.addByPrefix('singRIGHT', 'RyanRightNoGun', 24, false);
+	
+					addOffset('idle');
+					addOffset("singUP", 0, 2);
+					addOffset("singRIGHT", -16, -8);
+					addOffset("singLEFT", 20, -5);
+					addOffset("singDOWN", -5, -120);
+	
+					playAnim('idle');
+				
+			case 'ryan-insane':
+				tex = Paths.getSparrowAtlas('characters/Ryan_FNF_assetss_insane');
 				frames = tex;
 				animation.addByPrefix('idle', "RyanIdle", 24);
 
@@ -510,10 +548,10 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'RyanRight', 24, false);
 
 				addOffset('idle');
-				addOffset("singUP", 0, 87);
-				addOffset("singRIGHT", -14, -10);
-				addOffset("singLEFT", 23, 0);
-				addOffset("singDOWN", -7, -118);
+				addOffset("singUP", -2, 85);
+				addOffset("singRIGHT", -17, -9);
+				addOffset("singLEFT", 21, -5);
+				addOffset("singDOWN", -7, -116);
 
 				playAnim('idle');
 		}

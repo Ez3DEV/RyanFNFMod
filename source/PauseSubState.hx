@@ -116,7 +116,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		
 		#if cpp
-			else if (leftP)
+			/*else if (leftP)
 			{
 				oldOffset = PlayState.songOffset;
 				PlayState.songOffset -= 1;
@@ -168,7 +168,7 @@ class PauseSubState extends MusicBeatSubstate
 					cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 					offsetChanged = true;
 				}
-			}
+			}*/
 		#end
 
 		if (accepted)
