@@ -36,6 +36,8 @@ class OptionsMenu extends MusicBeatState
 	override function create()
 	{
 		instance = this;
+		if (Conductor.bpm == 0) Conductor.changeBPM(160);
+		if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
 
 		if (!FlxG.save.data.spanishMode)
 			{
@@ -171,6 +173,7 @@ class OptionsMenu extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		if (FlxG.sound.music != null) Conductor.songPosition = FlxG.sound.music.time;
 
 		if (acceptInput)
 		{
@@ -339,4 +342,23 @@ class OptionsMenu extends MusicBeatState
 			}
 		}
 	}
+	
+
+	override function beatHit()
+		{
+			super.beatHit();
+			FlxG.log.add(curBeat);
+			
+			if (curBeat % 4 == 0)
+			{
+				FlxG.camera.zoom = 1.15;
+				FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.expoOut});
+			}
+			
+			if (curBeat % 4 != 0)
+			{
+				FlxG.camera.zoom = 1.03;
+				FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.expoOut});
+			}
+		}
 }

@@ -1,5 +1,6 @@
 package;
 
+import flixel.effects.FlxFlicker;
 import flixel.tweens.FlxEase;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.FlxG;
@@ -64,6 +65,10 @@ class StoryMenuState extends MusicBeatState
 	
 	var weekTutorialBg:FlxSprite;
 	var weekVsRyanBg:FlxSprite;
+
+	var moveCamera:Bool = true;
+
+	var isCutscene:Bool = false;
 
 	override function create()
 	{
@@ -205,6 +210,8 @@ class StoryMenuState extends MusicBeatState
 		add(weekDifficulty);
 		add(leftArrow);
 		add(rightArrow);
+
+		if (Conductor.bpm == 0) Conductor.changeBPM(160);
 		
 		updateDiff();
 		updateWeek();
@@ -214,34 +221,48 @@ class StoryMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
+
 		if (!stopspamming)
 		{
 			if (FlxG.keys.justPressed.UP)
-				{
-					changeWeek(1);
-				}
-				else if (FlxG.keys.justPressed.DOWN)
-				{
-					changeWeek(-1);
-				}
-				else if (FlxG.keys.justPressed.LEFT)
-				{
-					changeDiff(-1);
-				}
-				else if (FlxG.keys.justPressed.RIGHT)
-				{
-					changeDiff(1);
-				}
-				else if (FlxG.keys.justPressed.ENTER)
-				{
-					selectWeek();
-				}
-				else if (FlxG.keys.justPressed.BACKSPACE && !movedBack && !selectedWeek)
-				{
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					movedBack = true;
-					FlxG.switchState(new MainMenuState());
-				}
+			{
+				changeWeek(1);
+			}
+			else if (FlxG.keys.justPressed.DOWN)
+			{
+				changeWeek(-1);
+			}
+			else if (FlxG.keys.justPressed.LEFT)
+			{
+				changeDiff(-1);
+			}
+			else if (FlxG.keys.justPressed.RIGHT)
+			{
+				changeDiff(1);
+			}
+			else if (FlxG.keys.justPressed.ENTER)
+			{
+				selectWeek();
+			}
+			else if (FlxG.keys.justPressed.BACKSPACE && !movedBack && !selectedWeek)
+			{
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				movedBack = true;
+				FlxG.switchState(new MainMenuState());
+			}
+			#if DEBUG_MOD
+			else if (FlxG.keys.justPressed.F)
+			{
+				if (!FlxG.save.data.spanishMode) FlxG.switchState(new VideoState('assets/videos/level3_end.webm', new StoryMenuState(), 0, true));
+				else FlxG.switchState(new VideoState('assets/videos/level3_end_spanish.webm', new StoryMenuState(), 0, true));
+			}
+			else if (FlxG.keys.justPressed.Z)
+			{
+				FlxG.save.data.memeSongUnlocked = !FlxG.save.data.memeSongUnlocked;
+			}
+			#end
 		}
 
 		super.update(elapsed);
@@ -343,6 +364,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		if (weekUnlocked[curWeek])
 			{
+				moveCamera = false;
 				if (stopspamming == false)
 				{
 					FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -353,7 +375,7 @@ class StoryMenuState extends MusicBeatState
 				FlxTween.tween(weekTutorialBg, {"scale.x": 1.2, "scale.y": 1.2}, 0.4, {type: ONESHOT, ease: FlxEase.linear});
 				FlxTween.tween(weekCharacterVsRyanBack, {"scale.x": 1.2, "scale.y": 1.2, alpha: 0}, 0.4, {type: ONESHOT, ease: FlxEase.linear});
 				FlxTween.tween(weekCharacterTutorialBack, {"scale.x": 1.2, "scale.y": 1.2, alpha: 0}, 0.4, {type: ONESHOT, ease: FlxEase.linear});
-				FlxTween.tween(FlxG.camera, {zoom: 2.3}, 1.2, {ease: FlxEase.backIn});
+				FlxTween.tween(FlxG.camera, {zoom: 3, angle: 90}, 1.5, {ease: FlxEase.expoIn});
 	
 				PlayState.storyPlaylist = weekData[curWeek];
 				PlayState.isStoryMode = true;
@@ -383,10 +405,32 @@ class StoryMenuState extends MusicBeatState
 				}
 				PlayState.storyWeek = curWeek;
 				PlayState.campaignScore = 0;
+
+				FlxFlicker.flicker(weekText, 1, 0.06, false, false);
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
 					LoadingState.loadAndSwitchState(new PlayState(), true);
 				});
 			}
+	}
+
+	override function stepHit()
+	{
+		super.beatHit();
+	}
+
+	override function beatHit()
+	{
+		if (curBeat % 4 == 0)
+		{
+			FlxG.camera.zoom = 1.15;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.linear});
+		}
+		
+		if (curBeat % 4 != 0)
+		{
+			FlxG.camera.zoom = 1.03;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.linear}); //Make something else than this cuz its broken and idk how to fix it
+		}
 	}
 }

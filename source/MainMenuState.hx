@@ -66,7 +66,10 @@ class MainMenuState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
 
-		persistentUpdate = persistentDraw = true;
+		if (Conductor.bpm == 0) Conductor.changeBPM(160);
+		Conductor.songPosition = FlxG.sound.music.time;
+
+		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('menuBGnoblur'));
 		bg.scrollFactor.x = 0;
@@ -101,6 +104,7 @@ class MainMenuState extends MusicBeatState
 		modLogo.screenCenter(FlxAxes.XY);
 		modLogo.x -= menuOffset;
 		modLogo.scrollFactor.set();
+		modLogo.antialiasing = true;
 		add(modLogo);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -187,15 +191,8 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if (actualTimeBeat < timeEachBeat)
-		{
-			actualTimeBeat += FlxG.elapsed;
-		}
-		else if (actualTimeBeat >= timeEachBeat)
-		{
-			actualTimeBeat = 0;
-			beatHit();
-		}
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
 
 		if (FlxG.sound.music.volume < 0.8)
 		{
@@ -203,68 +200,68 @@ class MainMenuState extends MusicBeatState
 		}
 
 		if (!selectedSomethin)
-		{
-			if (controls.UP_P)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				changeItem(-1);
-			}
-
-			if (controls.DOWN_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				changeItem(1);
-			}
-
-			if (controls.BACK)
-			{
-				FlxG.switchState(new TitleState());
-			}
-
-			if (controls.ACCEPT)
-			{
-				if (optionShit[curSelected] == 'donate')
+				if (FlxG.keys.justPressed.UP)
 				{
-					FlxG.sound.play(Paths.sound("FART"));
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeItem(-1);
 				}
-				else
+	
+				if (FlxG.keys.justPressed.DOWN)
 				{
-					selectedSomethin = true;
-					FlxG.sound.play(Paths.sound('confirmMenu'));
-
-					menuItems.forEach(function(spr:FlxSprite)
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					changeItem(1);
+				}
+	
+				if (FlxG.keys.justPressed.BACKSPACE || FlxG.keys.justPressed.ESCAPE)
+				{
+					FlxG.switchState(new TitleState());
+				}
+	
+				if (FlxG.keys.justPressed.ENTER)
+				{
+					if (optionShit[curSelected] == 'donate')
 					{
-						if (curSelected != spr.ID)
+						FlxG.sound.play(Paths.sound("FART"));
+					}
+					else
+					{
+						selectedSomethin = true;
+						FlxG.sound.play(Paths.sound('confirmMenu'));
+	
+						menuItems.forEach(function(spr:FlxSprite)
 						{
-							FlxTween.tween(spr, {alpha: 0}, 1.3, {
-								ease: FlxEase.quadOut,
-								onComplete: function(twn:FlxTween)
-								{
-									spr.kill();
-								}
-							});
-						}
-						else
-						{
-							if (FlxG.save.data.flashing)
+							if (curSelected != spr.ID)
 							{
-								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
-								{
-									goToState();
+								FlxTween.tween(spr, {alpha: 0}, 1.3, {
+									ease: FlxEase.quadOut,
+									onComplete: function(twn:FlxTween)
+									{
+										spr.kill();
+									}
 								});
 							}
 							else
 							{
-								new FlxTimer().start(1, function(tmr:FlxTimer)
+								if (FlxG.save.data.flashing)
 								{
-									goToState();
-								});
+									FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+									{
+										goToState();
+									});
+								}
+								else
+								{
+									new FlxTimer().start(1, function(tmr:FlxTimer)
+									{
+										goToState();
+									});
+								}
 							}
-						}
-					});
+						});
+					}
 				}
 			}
-		}
 
 		super.update(elapsed);
 
@@ -319,8 +316,23 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
-	public override function beatHit()
+	override function beatHit()
 	{
+		super.beatHit();
+		FlxG.log.add(curBeat);
+
 		modLogo.animation.play("logoBumpin");
+		
+		if (curBeat % 4 == 0)
+		{
+			FlxG.camera.zoom = 1.15;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.expoOut});
+		}
+		
+		if (curBeat % 4 != 0)
+		{
+			FlxG.camera.zoom = 1.03;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.expoOut});
+		}
 	}
 }

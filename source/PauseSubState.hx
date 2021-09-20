@@ -22,6 +22,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+	var menuItemsSpanish:Array<String> = ['Reanudar', 'Reiniciar cancion', 'Salir al menu'];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -80,10 +81,20 @@ class PauseSubState extends MusicBeatSubstate
 
 		for (i in 0...menuItems.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			grpMenuShit.add(songText);
+			if (!FlxG.save.data.spanishMode)
+			{
+				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
+				songText.isMenuItem = true;
+				songText.targetY = i;
+				grpMenuShit.add(songText);
+			}
+			else
+			{
+				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItemsSpanish[i], true, false);
+				songText.isMenuItem = true;
+				songText.targetY = i;
+				grpMenuShit.add(songText);
+			}
 		}
 
 		changeSelection();
@@ -173,33 +184,69 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (accepted)
 		{
-			var daSelected:String = menuItems[curSelected];
+			var daSelected;
+			if (!FlxG.save.data.spanishMode) daSelected = menuItems[curSelected];
+			else daSelected = menuItemsSpanish[curSelected];
 
-			switch (daSelected)
+			if (!FlxG.save.data.spanishMode)
 			{
-				case "Resume":
-					close();
-				case "Restart Song":
-					FlxG.resetState();
-				case "Exit to menu":
-					if(PlayState.loadRep)
-					{
-						FlxG.save.data.botplay = false;
-						FlxG.save.data.scrollSpeed = 1;
-						FlxG.save.data.downscroll = false;
-					}
-					PlayState.loadRep = false;
-					#if windows
-					if (PlayState.luaModchart != null)
-					{
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end
-					if (FlxG.save.data.fpsCap > 290)
-						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
-					
-					FlxG.switchState(new MainMenuState());
+				switch (daSelected)
+				{
+					case "Resume":
+						close();
+					case "Restart Song":
+						FlxG.resetState();
+					case "Exit to menu":
+						if(PlayState.loadRep)
+						{
+							FlxG.save.data.botplay = false;
+							FlxG.save.data.scrollSpeed = 1;
+							FlxG.save.data.downscroll = false;
+						}
+						PlayState.loadRep = false;
+						#if windows
+						if (PlayState.luaModchart != null)
+						{
+							PlayState.luaModchart.die();
+							PlayState.luaModchart = null;
+						}
+						#end
+						if (FlxG.save.data.fpsCap > 290)
+							(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
+						
+						Conductor.changeBPM(0);
+						FlxG.switchState(new MainMenuState());
+				}
+			}
+			else
+			{
+				switch (daSelected)
+				{
+					case "Reanudar":
+						close();
+					case "Reiniciar cancion":
+						FlxG.resetState();
+					case "Salir al menu":
+						if(PlayState.loadRep)
+						{
+							FlxG.save.data.botplay = false;
+							FlxG.save.data.scrollSpeed = 1;
+							FlxG.save.data.downscroll = false;
+						}
+						PlayState.loadRep = false;
+						#if windows
+						if (PlayState.luaModchart != null)
+						{
+							PlayState.luaModchart.die();
+							PlayState.luaModchart = null;
+						}
+						#end
+						if (FlxG.save.data.fpsCap > 290)
+							(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
+						
+						Conductor.changeBPM(0);
+						FlxG.switchState(new MainMenuState());
+				}
 			}
 		}
 
@@ -219,27 +266,56 @@ class PauseSubState extends MusicBeatSubstate
 
 	function changeSelection(change:Int = 0):Void
 	{
-		curSelected += change;
-
-		if (curSelected < 0)
-			curSelected = menuItems.length - 1;
-		if (curSelected >= menuItems.length)
-			curSelected = 0;
-
-		var bullShit:Int = 0;
-
-		for (item in grpMenuShit.members)
+		if (!FlxG.save.data.spanishMode)
 		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
+			curSelected += change;
 
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
-			if (item.targetY == 0)
+			if (curSelected < 0)
+				curSelected = menuItems.length - 1;
+			if (curSelected >= menuItems.length)
+				curSelected = 0;
+	
+			var bullShit:Int = 0;
+	
+			for (item in grpMenuShit.members)
 			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+	
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+	
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
+			}
+		}
+		else
+		{
+			curSelected += change;
+
+			if (curSelected < 0)
+				curSelected = menuItemsSpanish.length - 1;
+			if (curSelected >= menuItemsSpanish.length)
+				curSelected = 0;
+	
+			var bullShit:Int = 0;
+	
+			for (item in grpMenuShit.members)
+			{
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+	
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+	
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
 			}
 		}
 	}

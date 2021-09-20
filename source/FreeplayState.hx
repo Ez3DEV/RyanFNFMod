@@ -1,5 +1,6 @@
 package;
 
+import Song;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxTimer;
@@ -41,7 +42,8 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		var initSonglist:Array<String> = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		if (FlxG.save.data.memeSongUnlocked) initSonglist.push("CULTURED-SWINE:ryan:7");
 
 		for (i in 0...initSonglist.length)
 		{
@@ -178,6 +180,9 @@ class FreeplayState extends MusicBeatState
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
+
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
 
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
 
@@ -317,6 +322,7 @@ class FreeplayState extends MusicBeatState
 
 			#if PRELOAD_ALL
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+			Conductor.changeBPM(Song.loadFromJson(songs[curSelected].songName, songs[curSelected].songName).bpm);
 			#end
 
 			var bullShit:Int = 0;
@@ -342,6 +348,21 @@ class FreeplayState extends MusicBeatState
 					// item.setGraphicSize(Std.int(item.width));
 				}
 			}
+		}
+	}
+
+	override function beatHit()
+	{
+		if (curBeat % 4 == 0)
+		{
+			FlxG.camera.zoom = 1.15;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.linear});
+		}
+		
+		if (curBeat % 4 != 0)
+		{
+			FlxG.camera.zoom = 1.03;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.3, {ease: FlxEase.linear}); //Make something else than this cuz its broken and idk how to fix it
 		}
 	}
 }

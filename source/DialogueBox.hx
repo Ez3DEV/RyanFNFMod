@@ -95,7 +95,7 @@ class DialogueBox extends FlxSpriteGroup
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
 
-			case 'bass', 'rappin', 'faster':
+			case 'bass', 'rappin', 'faster', 'cultured-swine':
 				hasDialog = true;
 				box.frames = Paths.getSparrowAtlas('ryan_text');
 				box.animation.addByPrefix('normalOpen', 'RyanSignAppear', 24, false);
@@ -129,7 +129,7 @@ class DialogueBox extends FlxSpriteGroup
 				add(portraitRight);
 				portraitRight.visible = false;
 
-			case 'bass', 'rappin', 'faster':
+			case 'bass', 'rappin', 'faster', 'cultured-swine':
 				portraitLeft = new FlxSprite(-150, 120);
 				portraitLeft.frames = Paths.getSparrowAtlas('ryan_text');
 				portraitLeft.animation.addByPrefix('enter', 'RyanAppear', 24, false);
@@ -199,7 +199,7 @@ class DialogueBox extends FlxSpriteGroup
 			swagDialogue.color = FlxColor.WHITE;
 			dropText.color = FlxColor.BLACK;
 		}
-		if (PlayState.SONG.song.toLowerCase() == 'bass' || PlayState.SONG.song.toLowerCase() == 'rappin' || PlayState.SONG.song.toLowerCase() == 'faster')
+		if (PlayState.SONG.song.toLowerCase() == 'bass' || PlayState.SONG.song.toLowerCase() == 'rappin' || PlayState.SONG.song.toLowerCase() == 'faster' || PlayState.SONG.song.toLowerCase() == 'cultured-swine')
 		{
 			swagDialogue.color = 0xFFFFFFFF;
 			dropText.color = 0xFF454545;

@@ -532,7 +532,7 @@ class Character extends FlxSprite
 					addOffset('idle');
 					addOffset("singUP", 0, 2);
 					addOffset("singRIGHT", -16, -8);
-					addOffset("singLEFT", 20, -5);
+					addOffset("singLEFT", 25, -8);
 					addOffset("singDOWN", -5, -120);
 	
 					playAnim('idle');
@@ -552,6 +552,24 @@ class Character extends FlxSprite
 				addOffset("singRIGHT", -17, -9);
 				addOffset("singLEFT", 21, -5);
 				addOffset("singDOWN", -7, -116);
+
+				playAnim('idle');
+	
+			case 'ryan-nogun-insane':
+				tex = Paths.getSparrowAtlas('characters/Ryan_FNF_assetss_nogun_insane');
+				frames = tex;
+				animation.addByPrefix('idle', "RyanIdleNoGun", 24);
+
+				animation.addByPrefix('singUP', 'RyanUpNoGun', 24, false);
+				animation.addByPrefix('singDOWN', 'RyanDownNoGun', 24, false);
+				animation.addByPrefix('singLEFT', 'RyanLeftNoGun', 24, false);
+				animation.addByPrefix('singRIGHT', 'RyanRightNoGun', 24, false);
+
+				addOffset('idle');
+				addOffset("singUP", 0, 2);
+				addOffset("singRIGHT", -16, -8);
+				addOffset("singLEFT", 25, -8);
+				addOffset("singDOWN", -5, -120);
 
 				playAnim('idle');
 		}
@@ -673,6 +691,22 @@ class Character extends FlxSprite
 						playAnim('danceRight');
 					else
 						playAnim('danceLeft');
+
+					case 'ryan':
+						danced = !danced;
+						playAnim('idle');
+
+					case 'ryan-insane':
+						danced = !danced;
+						playAnim('idle');
+
+					case 'ryan-nogun':
+						danced = !danced;
+						playAnim('idle');
+
+					case 'ryan-nogun-insane':
+						danced = !danced;
+						playAnim('idle');
 				default:
 					playAnim('idle');
 			}

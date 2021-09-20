@@ -88,6 +88,9 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.beatHit();
 
+		bf.animation.stop();
+		bf.playAnim('deathLoop');
+
 		FlxG.log.add('beat');
 	}
 

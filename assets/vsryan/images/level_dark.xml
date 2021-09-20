@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="level_dark.png">
+	<!-- Created with Adobe Animate version 20.5.1.31044 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="BackgroundBonkersSecond_dark0000" x="0" y="0" width="1739" height="417" frameX="0" frameY="-53" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0001" x="0" y="0" width="1739" height="417" frameX="0" frameY="-53" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0002" x="1759" y="0" width="1722" height="429" frameX="-12" frameY="-41" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0003" x="1759" y="0" width="1722" height="429" frameX="-12" frameY="-41" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0004" x="3501" y="0" width="1685" height="450" frameX="-32" frameY="-20" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0005" x="3501" y="0" width="1685" height="450" frameX="-32" frameY="-20" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0006" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0007" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0008" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0009" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0010" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0011" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0012" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0013" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BackgroundBonkersSecond_dark0014" x="5206" y="0" width="1641" height="470" frameX="-45" frameY="0" frameWidth="1739" frameHeight="470"/>
+	<SubTexture name="BuildingsBackground_dark0000" x="0" y="490" width="2006" height="682"/>
+	<SubTexture name="BuildingsLights0_dark0000" x="2026" y="490" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights1_dark0000" x="3664" y="490" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights2_dark0000" x="5302" y="490" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights3_dark0000" x="0" y="1192" width="1618" height="470"/>
+	<SubTexture name="BuildingsLights4_dark0000" x="1638" y="1192" width="1618" height="470"/>
+	<SubTexture name="Floor_dark0000" x="3276" y="1192" width="2125" height="742"/>
+	<SubTexture name="ForegroundLight_dark0000" x="5421" y="1192" width="2442" height="1378"/>
+	<SubTexture name="Foreground_dark0000" x="7883" y="1192" width="195" height="891"/>
+</TextureAtlas>

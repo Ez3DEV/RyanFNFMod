@@ -37,7 +37,7 @@ class Note extends FlxSprite
 
 	public var rating:String = "shit";
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
+	public function new(strumTime:Float, noteData:Int, noteSide:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super();
 
@@ -59,7 +59,11 @@ class Note extends FlxSprite
 
 		var daStage:String = PlayState.curStage;
 
-		switch (PlayState.SONG.noteStyle)
+		var noteStyle:String;
+		if (noteSide == 0) noteStyle = PlayState.SONG.noteStyleBF;
+		else noteStyle = PlayState.SONG.noteStyleDAD;
+
+		switch (noteStyle)
 		{
 			case 'pixel':
 				loadGraphic(Paths.image('weeb/pixelUI/arrows-pixels','week6'), true, 17, 17);
@@ -86,6 +90,27 @@ class Note extends FlxSprite
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
+			case 'ryan':
+				frames = Paths.getSparrowAtlas('Ryan_NOTE_assetss');
+
+				animation.addByPrefix('greenScroll', 'green hold end');
+				animation.addByPrefix('redScroll', 'red hold end');
+				animation.addByPrefix('blueScroll', 'blue hold end');
+				animation.addByPrefix('purpleScroll', 'pruple end hold');
+
+				animation.addByPrefix('purpleholdend', 'pruple end hold');
+				animation.addByPrefix('greenholdend', 'green hold end');
+				animation.addByPrefix('redholdend', 'red hold end');
+				animation.addByPrefix('blueholdend', 'blue hold end');
+
+				animation.addByPrefix('purplehold', 'purple hold piece');
+				animation.addByPrefix('greenhold', 'green hold piece');
+				animation.addByPrefix('redhold', 'red hold piece');
+				animation.addByPrefix('bluehold', 'blue hold piece');
+
+				setGraphicSize(Std.int(width * 0.7));
+				updateHitbox();
+				antialiasing = true;
 			default:
 				frames = Paths.getSparrowAtlas('NOTE_assets');
 

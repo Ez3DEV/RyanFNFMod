@@ -114,7 +114,8 @@ class ChartingState extends MusicBeatState
 				player1: 'bf',
 				player2: 'dad',
 				gfVersion: 'gf',
-				noteStyle: 'normal',
+				noteStyleBF: 'normal',
+				noteStyleDAD: 'normal',
 				stage: 'stage',
 				speed: 1,
 				validScore: false
@@ -346,13 +347,21 @@ class ChartingState extends MusicBeatState
 		
 		var stageLabel = new FlxText(140,180,64,'Stage');
 
-		var noteStyleDropDown = new FlxUIDropDownMenu(10, 300, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
+		var noteStyleBFDropDown = new FlxUIDropDownMenu(10, 300, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
 			{
-				_song.noteStyle = noteStyles[Std.parseInt(noteStyle)];
+				_song.noteStyleBF = noteStyles[Std.parseInt(noteStyle)];
 			});
-		noteStyleDropDown.selectedLabel = _song.noteStyle;
+		noteStyleBFDropDown.selectedLabel = _song.noteStyleBF;
 
-		var noteStyleLabel = new FlxText(10,280,64,'Note Skin');
+		var noteStyleDADDropDown = new FlxUIDropDownMenu(140, 300, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
+			{
+				_song.noteStyleDAD = noteStyles[Std.parseInt(noteStyle)];
+			});
+		noteStyleDADDropDown.selectedLabel = _song.noteStyleDAD;
+
+		var noteStyleBFLabel = new FlxText(10,280,64,'Note Skin BF');
+
+		var noteStyleDADLabel = new FlxText(140,280,64,'Note Skin DAD');
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -383,8 +392,10 @@ class ChartingState extends MusicBeatState
 
 		var tab_group_assets = new FlxUI(null, UI_box);
 		tab_group_assets.name = "Assets";
-		tab_group_assets.add(noteStyleDropDown);
-		tab_group_assets.add(noteStyleLabel);
+		tab_group_assets.add(noteStyleBFDropDown);
+		tab_group_assets.add(noteStyleDADDropDown);
+		tab_group_assets.add(noteStyleBFLabel);
+		tab_group_assets.add(noteStyleDADLabel);
 		tab_group_assets.add(gfVersionDropDown);
 		tab_group_assets.add(gfVersionLabel);
 		tab_group_assets.add(stageDropDown);
@@ -710,7 +721,8 @@ class ChartingState extends MusicBeatState
 			var i = pressArray[p];
 			if (i && !delete)
 			{
-				addNote(new Note(Conductor.songPosition,p));
+				if (pressArray[p] == pressArray[4] || pressArray[p] == pressArray[5] || pressArray[p] == pressArray[6] || pressArray[p] == pressArray[7]) addNote(new Note(Conductor.songPosition,p,0));
+				else if (pressArray[p] == pressArray[0] || pressArray[p] == pressArray[1] || pressArray[p] == pressArray[2] || pressArray[p] == pressArray[3]) addNote(new Note(Conductor.songPosition,p,1));
 			}
 		}
 
@@ -1239,7 +1251,9 @@ class ChartingState extends MusicBeatState
 			var daStrumTime = i[0];
 			var daSus = i[2];
 
-			var note:Note = new Note(daStrumTime, daNoteInfo % 4);
+			var note:Note;
+			if ((_song.notes[curSection].mustHitSection && daNoteInfo <= 3) || (!_song.notes[curSection].mustHitSection && daNoteInfo >= 4)) note = new Note(daStrumTime, daNoteInfo % 4, 1);
+			else note = new Note(daStrumTime, daNoteInfo % 4, 0);
 			note.sustainLength = daSus;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();

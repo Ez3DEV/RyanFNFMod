@@ -142,7 +142,7 @@ class DownscrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return  FlxG.save.data.cpuStrums ? "Downscroll" : "Upscroll";
+		return  FlxG.save.data.downscroll ? "Downscroll" : "Upscroll";
 	}
 }
 
@@ -164,9 +164,9 @@ class GhostTapOption extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.spanishMode)
-			return FlxG.save.data.cpuStrums ? "Ghost Tapping" : "No Ghost Tapping";
+			return FlxG.save.data.ghost ? "Ghost Tapping On" : "Ghost Tapping Off";
 		else
-			return FlxG.save.data.downscroll ? "Ghost Tapping" : "Ghost Tapping Des";
+			return FlxG.save.data.ghost ? "Ghost Tapping Act" : "Ghost Tapping Des";
 	}
 }
 
@@ -503,9 +503,9 @@ class RainbowFPSOption extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.spanishMode)
-			return "FPS Rainbow" + (!FlxG.save.data.fpsRain ? "off" : "on");
+			return "FPS Rainbow " + (!FlxG.save.data.fpsRain ? "off" : "on");
 		else
-			return "FPS Arcoiris" + (!FlxG.save.data.fpsRain ? "des" : "act");
+			return "FPS Arcoiris " + (!FlxG.save.data.fpsRain ? "des" : "act");
 	}
 }
 
@@ -529,7 +529,7 @@ class NPSDisplayOption extends Option
 		if (!FlxG.save.data.spanishMode)
 			return "NPS Display " + (!FlxG.save.data.npsDisplay ? "off" : "on");
 		else
-			return "Mostrar NPS " + (!FlxG.save.data.fpsRain ? "des" : "act");
+			return "Mostrar NPS " + (!FlxG.save.data.npsDisplay ? "des" : "act");
 	}
 }
 
@@ -575,9 +575,9 @@ class AccuracyDOption extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.spanishMode)
-			return "Accuracy Mode: "+ (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex");
+			return "Accuracy Mode: "+ (FlxG.save.data.accuracyMod == 0 ? "Acc" : "Com");
 		else
-			return "Modo de precision: " + (FlxG.save.data.accuracyMod == 0 ? "Preciso" : "Complejo");
+			return "Modo de precision: " + (FlxG.save.data.accuracyMod == 0 ? "Pre" : "Com");
 	}
 }
 
@@ -705,9 +705,9 @@ class HideScore extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.spanishMode)
-			return "Hide Score Popup " + (FlxG.save.data.botplay ? "on" : "off");
+			return "Hide Score Popup " + (FlxG.save.data.hideScore ? "on" : "off");
 		else
-			return "Ocultar Popup de Score " + (FlxG.save.data.botplay ? "act" : "des");
+			return "Ocultar Score Popup " + (FlxG.save.data.hideScore ? "act" : "des");
 	}
 }
 
@@ -729,6 +729,6 @@ class SpanishMode extends Option
 
 	private override function updateDisplay():String
 	{
-		return (FlxG.save.data.spanishMode ? "Espanol" : "English");
+		return (FlxG.save.data.spanishMode ? "Espaniol" : "English");
 	}
 }

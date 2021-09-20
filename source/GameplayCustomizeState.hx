@@ -111,7 +111,8 @@ class GameplayCustomizeState extends MusicBeatState
 		generateStaticArrows(0);
 		generateStaticArrows(1);
 
-        text = new FlxText(5, FlxG.height + 40, 0, "Drag around gameplay elements, R to reset, Escape to go back.", 12);
+        if (!FlxG.save.data.spanishMode) text = new FlxText(5, FlxG.height + 40, 0, "Drag around gameplay elements, R to reset, Escape or Backspace to go back.", 12);
+        else text = new FlxText(5, FlxG.height + 40, 0, "Arrastra elementos del gameplay, R para reiniciar, Escape o Retroceso para ir atras.", 12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         
